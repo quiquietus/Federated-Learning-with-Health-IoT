@@ -1,0 +1,22 @@
+{
+  "hospital_a12": {
+    "user_id": "hospital_a12",
+    "email": "admin@hospital.com",
+    "password": "12321",
+    "client_type": "hospital",
+    "organization": "ge",
+    "role": "admin",
+    "password_hash": "$pbkdf2-sha256$29000$MYZwzjnnXGuNsXbuvZey1g$8iSX.7p15LQzJsaqODczFQdZ5EKBJd/JmGLL.E6bhuk",
+    "dataset_uploaded": true
+  },
+  "pika": {
+    "user_id": "pika",
+    "email": "dsds@gmail.com",
+    "password": "21221",
+    "client_type": "hospital",
+    "organization": "gkods",
+    "role": "admin",
+    "password_hash": "$pbkdf2-sha256$29000$c86Zs9a6t5YyxpizFsL43w$bbbtiM0ZgJYkzTNW8aM1BFhIaugRfodSfifpCdsZd2k",
+    "dataset_uploaded": true
+  }
+}

@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Federated Learning API Demo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        header {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        h1 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+        
+        .status {
+            display: inline-block;
+            padding: 5px 15px;
+            background: #10b981;
+            color: white;
+            border-radius: 20px;
+            font-size: 14px;
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .card h2 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 20px;
+        }
+        
+        button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s;
+            width: 100%;
+            margin-top: 10px;
+        }
+        
+        button:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        
+        .output {
+            background: #f3f4f6;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: monospace;
+            font-size: 12px;
+            max-height: 200px;
+            overflow-y: auto;
+            margin-top: 10px;
+        }
+        
+        .success { color: #10b981; }
+        .error { color: #ef4444; }
+        
+        .endpoint {
+            background: #f9fafb;
+            padding: 8px 12px;
+            border-left: 3px solid #667eea;
+            margin: 10px 0;
+            font-family: monospace;
+            font-size: 13px;
+        }
+        
+        .docs-link {
+            display: inline-block;
+            margin-top: 10px;
+            color: #667eea;
+            text-decoration: none;
+        }
+        
+        .docs-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🏥 Federated Learning Health API</h1>
+            <p style="color: #666; margin: 10px 0;">Production-grade federated learning for healthcare</p>
+            <span class="status" id="apiStatus">Checking...</span>
+        </header>
+        
+        <div class="grid">
+            <!-- API Health Check -->
+            <div class="card">
+                <h2>🔍 API Health</h2>
+                <div class="endpoint">GET /health</div>
+                <button onclick="checkHealth()">Check API Status</button>
+                <div class="output" id="healthOutput">Click button to check</div>
+            </div>
+            
+            <!-- Register User -->
+            <div class="card">
+                <h2>👤 Register User</h2>
+                <input type="text" id="userId" placeholder="User ID" value="demo_user">
+                <input type="email" id="email" placeholder="Email" value="demo@hospital.com">
+                <input type="password" id="password" placeholder="Password" value="password123">
+                <select id="clientType">
+                    <option value="hospital">Hospital</option>
+                    <option value="clinic">Clinic</option>
+                    <option value="lab">Diagnostic Lab</option>
+                    <option value="iot">IoT Hub</option>
+                </select>
+                <input type="text" id="organization" placeholder="Organization" value="Demo Hospital">
+                <button onclick="register()">Register</button>
+                <div class="output" id="registerOutput">Fill form and register</div>
+            </div>
+            
+            <!-- Start Round -->
+            <div class="card">
+                <h2>🔄 Start FL Round</h2>
+                <select id="roundClientType">
+                    <option value="hospital">Hospital</option>
+                    <option value="clinic">Clinic</option>
+                    <option value="lab">Diagnostic Lab</option>
+                    <option value="iot">IoT Hub</option>
+                </select>
+                <input type="text" id="token" placeholder="JWT Token (from registration)" style="margin-top: 10px;">
+                <button onclick="startRound()">Start Round</button>
+                <div class="output" id="roundOutput">Register first, then start a round</div>
+            </div>
+            
+            <!-- View Metrics -->
+            <div class="card">
+                <h2>📊 View Metrics</h2>
+                <select id="metricsClientType">
+                    <option value="hospital">Hospital</option>
+                    <option value="clinic">Clinic</option>
+                    <option value="lab">Diagnostic Lab</option>
+                    <option value="iot">IoT Hub</option>
+                </select>
+                <button onclick="getMetrics()">Get Metrics</button>
+                <div class="output" id="metricsOutput">Start a round first</div>
+            </div>
+        </div>
+        
+        <div class="card ">
+            <h2>📚 API Documentation</h2>
+            <p style="margin-bottom: 15px;">Explore the complete API documentation:</p>
+            <a href="http://localhost:8000/docs" target="_blank" class="docs-link">OpenAPI (Swagger) Docs →</a><br>
+            <a href="http://localhost:8000/redoc" target="_blank" class="docs-link">ReDoc Documentation →</a>
+            
+            <h3 style="margin-top: 20px; color: #667eea; font-size: 16px;">Available Endpoints:</h3>
+            <div class="endpoint">POST /api/register - Register new user</div>
+            <div class="endpoint">POST /api/login - Login and get JWT</div>
+            <div class="endpoint">GET /api/global-model/{type}/latest - Download model</div>
+            <div class="endpoint">POST /api/client-update - Submit model update</div>
+            <div class="endpoint">POST /api/start-round/{type} - Start FL round</div>
+            <div class="endpoint">GET /api/metrics/{type} - Get aggregated metrics</div>
+            <div class="endpoint">GET /api/risk-score - Insurance analyst risk scoring</div>
+        </div>
+    </div>
+    
+    <script>
+        const API_URL = 'http://localhost:8000';
+        let authToken = '';
+        
+        async function checkHealth() {
+            const output = document.getElementById('healthOutput');
+            try {
+                const response = await fetch(`${API_URL}/health`);
+                const data = await response.json();
+                output.innerHTML = `<span class="success">✓ API is healthy!</span><br>${JSON.stringify(data, null, 2)}`;
+                document.getElementById('apiStatus').textContent = 'API Online';
+                document.getElementById('apiStatus').style.background = '#10b981';
+            } catch (error) {
+                output.innerHTML = `<span class="error">✗ Error: ${error.message}</span>`;
+                document.getElementById('apiStatus').textContent = 'API Offline';
+                document.getElementById('apiStatus').style.background = '#ef4444';
+            }
+        }
+        
+        async function register() {
+            const output = document.getElementById('registerOutput');
+            const data = {
+                user_id: document.getElementById('userId').value,
+                email: document.getElementById('email').value,
+                password: document.getElementById('password').value,
+                client_type: document.getElementById('clientType').value,
+                organization: document.getElementById('organization').value,
+                role: 'doctor'
+            };
+            
+            try {
+                const response = await fetch(`${API_URL}/api/register`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(data)
+                });
+                
+                const result = await response.json();
+                
+                if (response.ok) {
+                    authToken = result.access_token;
+                    document.getElementById('token').value = authToken;
+                    output.innerHTML = `<span class="success">✓ Registration successful!</span><br>Token saved.<br>User: ${result.user_id}<br>Type: ${result.client_type}`;
+                } else {
+                    output.innerHTML = `<span class="error">✗ ${result.detail}</span>`;
+                }
+            } catch (error) {
+                output.innerHTML = `<span class="error">✗ Error: ${error.message}</span>`;
+            }
+        }
+        
+        async function startRound() {
+            const output = document.getElementById('roundOutput');
+            const token = document.getElementById('token').value || authToken;
+            const clientType = document.getElementById('roundClientType').value;
+            
+            if (!token) {
+                output.innerHTML = '<span class="error">✗ Please register first to get a token</span>';
+                return;
+            }
+            
+            try {
+                const response = await fetch(`${API_URL}/api/start-round/${clientType}`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                const result = await response.json();
+                
+                if (response.ok) {
+                    output.innerHTML = `<span class="success">✓ Round started!</span><br>${JSON.stringify(result, null, 2)}`;
+                } else {
+                    output.innerHTML = `<span class="error">✗ ${result.detail}</span>`;
+                }
+            } catch (error) {
+                output.innerHTML = `<span class="error">✗ Error: ${error.message}</span>`;
+            }
+        }
+        
+        async function getMetrics() {
+            const output = document.getElementById('metricsOutput');
+            const token = document.getElementById('token').value || authToken;
+            const clientType = document.getElementById('metricsClientType').value;
+            
+            if (!token) {
+                output.innerHTML = '<span class="error">✗ Please register first</span>';
+                return;
+            }
+            
+            try {
+                const response = await fetch(`${API_URL}/api/metrics/${clientType}`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                
+                const result = await response.json();
+                
+                if (response.ok) {
+                    output.innerHTML = `<span class="success">✓ Metrics retrieved!</span><br>${JSON.stringify(result, null, 2)}`;
+                } else {
+                    output.innerHTML = `<span class="error">✗ ${result.detail}</span>`;
+                }
+            } catch (error) {
+                output.innerHTML = `<span class="error">✗ Error: ${error.message}</span>`;
+            }
+        }
+        
+        // Check API on page load
+        window.addEventListener('load', checkHealth);
+    </script>
+</body>
+</html>

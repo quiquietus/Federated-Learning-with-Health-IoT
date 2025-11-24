@@ -1,0 +1,65 @@
+version: '3.8'
+
+# Optimized for weak CPU machines (2 cores, 4-8GB RAM)
+# Use: docker-compose -f docker-compose.cpu.yml up
+
+services:
+  postgres:
+    extends:
+      file: docker-compose.yml
+      service: postgres
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
+
+  redis:
+    extends:
+      file: docker-compose.yml
+      service: redis
+    deploy:
+      resources:
+        limits:
+          cpus: '0.25'
+          memory: 256M
+
+  minio:
+    extends:
+      file: docker-compose.yml
+      service: minio
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
+
+  server:
+    extends:
+      file: docker-compose.yml
+      service: server
+    deploy:
+      resources:
+        limits:
+          cpus: '0.75'
+          memory: 1G
+
+  worker:
+    extends:
+      file: docker-compose.yml
+      service: worker
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 2G
+
+  frontend:
+    extends:
+      file: docker-compose.yml
+      service: frontend
+    deploy:
+      resources:
+        limits:
+          cpus: '0.25'
+          memory: 512M

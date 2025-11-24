@@ -1,0 +1,83 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+venv/
+ENV/
+env/
+
+# PyTorch
+*.pth
+*.pt
+
+# LightGBM models
+*.model
+lgbm_*.txt
+global_model_*.txt
+
+# Data
+data/
+datasets/
+*.csv
+*.zip
+*.jpg
+*.png
+
+# Environment
+.env
+.env.local
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Node
+node_modules/
+dist/
+.cache/
+
+# Docker
+docker-data/
+
+# Test
+.pytest_cache/
+.coverage
+htmlcov/
+
+# MinIO data
+minio-data/
+
+# Model artifacts (trained models, not source code)
+*.pth
+*.pt
+lgbm_*.txt
+global_model_*.txt
+*.model
+global_models/
+model_checkpoints/
